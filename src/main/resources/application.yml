@@ -1,6 +1,5 @@
 server:
   port: 9003
-
 spring:
   cloud:
     stream:
@@ -25,4 +24,19 @@ spring:
           auto-add-partitions: true
           min-partition-count: 1
           replication-factor: 1
-
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.183.31:3306/cw?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 10
+      idle-timeout: 600000
+      maximum-pool-size: 20
+      auto-commit: true
+      max-lifetime: 1800000
+      connection-timeout: 30000
+mybatis:
+  mapper-locations:
+    - classpath*:/mapper/*.xml

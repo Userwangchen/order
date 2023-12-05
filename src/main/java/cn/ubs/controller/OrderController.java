@@ -2,7 +2,10 @@ package cn.ubs.controller;
 
 
 import cn.ubs.POJO.Order;
+import cn.ubs.POJO.Tbuser;
+import cn.ubs.mapper.TbuserMapper;
 import cn.ubs.message.ReportProducer;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class OrderController {
     @Autowired
     private ReportProducer producer;
 
+    @Autowired
+    TbuserMapper tbuserMapper;
+
     @GetMapping("/getAll")
     public List<String> getAll(){
         List<String> list = new ArrayList<>();
@@ -37,6 +43,12 @@ public class OrderController {
         list.add("order3");
         list.add("order4");
         return list;
+    }
+
+    @GetMapping("/getTbUserById")
+    public void getTbUserById(Long id){
+        Tbuser tbuser = tbuserMapper.selectByPrimaryKey(id);
+        logger.info("tbUser is {}", JSON.toJSONString(tbuser));
     }
 
 
