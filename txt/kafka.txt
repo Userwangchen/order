@@ -1,0 +1,62 @@
+ctrl+alt+F6 虚拟机从图形界面切换到命令界面
+mkdir -p  参数是表示建立不存在的多级目录
+rm -r -f  表示递归删除 表示强制删除force
+touch filename 创建文件
+tar -zxvf xxx.gz 解压文件
+ps -ef|grep kafka 查询运行中的线程是否有kafka
+systemctl status firewalld.service 查看防火墙
+systemctl stop firewalld.service 临时关闭防火墙
+systemctl disable firewalld.service 禁用防火墙
+1.在vim中，esc进入底部编辑，/之后输入要查询的关键字，回车搜索，n搜索下一个
+
+ ./kafka-server-start.sh  /home/2023/07/soft/kafka_2.12-2.4.1/config/server.properties 启动kafka
+./kafka-server-stop.sh 关闭kafka
+./kafka-topics.sh --list --zookeeper localhost:2181 查询topic列表
+./kafka-topics.sh --delete --zookeeper localhost:2181  --topic test 删除topic test 只是查不出来了，要想彻底删除需要修改配置
+./kafka-console-producer.sh --broker-list xx.xx.xx.xx:9092  --topic test 生产者往topic test生产数据
+# replication-factor 表示不同broker中相同数据，partition 表示一个topic分成几个分区，用于快速消费数据
+./kafka-topics.sh -zookeeper localhost:2181 --create --partitions 2 --replication-factor 1 --topic test2 创建topic
+./kafka-console-consumer.sh --bootstrap-server xx.xx.xx.xx:9092  --topic test  --from-beginning --group t1  开启消费者，from-beginning 从头开始消费
+ ./kafka-topics.sh  --zookeeper 192.168.2.2:2181 --describe --topic order-publish-out  查看topic  order-publish-out 的信息
+术语：
+broker 一个服务器成为一个broker
+topic 逻辑分区，消息按照分类到不同的topic
+partition 物理分区，一个topic可以包含一个或多个partition，一个partition是一个文件夹，消息分配到topic中，会根据分区策略到文件末尾
+这里需要注意的内存读取速率：有序内存>有序磁盘>无序内存>无序磁盘  ，其中kafka中有序磁盘保证读取效率的
+offset 偏移量，每一条消息在partition中有唯一的offset	
+
+./zkServer.sh start /status/ stop 启动/查看状态/关闭 zookeeper服务
+
+
+------------------
+1.springcloud屏蔽了不同消息队列的底层，统一使用input和output形式，以Binder为中间
+  件，方便我们切换消息队列。人话:不需要修改代码，只需要修改配置中的类型，完成消息队列切换
+2.配置文件
+spring:
+  application:
+    name: stream-publisher
+  cloud:
+    stream:
+      binders: # 在此处配置要绑定的rabbitmq的服务信息
+        defaultRabbit: # 表示定义的名称，用于binding整合（随意）
+          type: rabbit # 消息组件类型，可以为kafka
+          environment: # 设置rabbitmq的相关环境配置
+            spring:
+              rabbitmq:
+                host: 47.96.156.51  # RabbitMQ在本机的用localhost，在服务器的用服务器的ip地址
+                port: 5672
+                username: admin
+                password: admin
+                virtual-host: /
+      bindings: # 服务的整合处理
+        my-output: # 这个名字是一个通道channel的名称，一个定义的名称
+          destination: my-Exchange # 表示要使用的Exchange名称
+          content-type: text/plain  # 设置消息类型，application/json -> json格式，本文要设置为 text/plain -> 文本类型
+       my-input
+         destination: my-
+
+
+
+
+mvn中出现Try to run Maven import with -U flag (force update snapshots)报错是缺少东西，点击mvn run，执行一下
+mvn clean install -e -U

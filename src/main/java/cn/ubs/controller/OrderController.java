@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -31,7 +33,8 @@ public class OrderController {
 
     @Autowired
     private ReportProducer producer;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Autowired
     TbuserMapper tbuserMapper;
 
@@ -49,6 +52,19 @@ public class OrderController {
     public void getTbUserById(Long id){
         Tbuser tbuser = tbuserMapper.selectByPrimaryKey(id);
         logger.info("tbUser is {}", JSON.toJSONString(tbuser));
+    }
+
+    /*
+        测试redis中字符串是否一致问题
+     */
+    @GetMapping("getRedisResult")
+    public void getRedisResult(){
+        String secCde = "882358";
+        String year = "2022";
+        String bussnessId = secCde + year;
+        Boolean vaaa = redisTemplate.opsForValue().setIfAbsent(bussnessId, "vaaa", 30L, TimeUnit.SECONDS);
+        boolean aNull = Objects.isNull(vaaa ? false : vaaa);
+        logger.info("result is {}",aNull);
     }
 
 
