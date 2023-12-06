@@ -1,6 +1,7 @@
 package cn.ubs.controller;
 
 
+import cn.ubs.POJO.ContextHandler;
 import cn.ubs.POJO.Order;
 import cn.ubs.POJO.Tbuser;
 import cn.ubs.mapper.TbuserMapper;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.Context;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -74,6 +76,20 @@ public class OrderController {
 
     }
 
+    @GetMapping("testHandler1")
+    public void testHandler1(){
+        ContextHandler instance = ContextHandler.getInstance();
+        instance.setName("zhangsan");
+
+    }
+
+    @GetMapping("testHandler2")
+    public void testHandler2(){
+        ContextHandler instance = ContextHandler.getInstance();
+        String name = instance.getName();
+        logger.info("name is : {}",name);
+
+    }
 
     public static void main(String[] args) {
 
