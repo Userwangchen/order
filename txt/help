@@ -1,0 +1,2 @@
+1.stringredistemplate 不需要设置序列化，它是redistemplate的子类，已经配置好序列化
+2.

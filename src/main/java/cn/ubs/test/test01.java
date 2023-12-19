@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class test01 {
 
@@ -42,12 +44,18 @@ public class test01 {
 
     public static void main(String[] args) {
 
-        HashMap<String, String> map2 = new HashMap() {
-            {
-                put("A",1);
-            }
-        };
+        int i = 10;
+        updateInt(i);
+        System.out.println("i is"+i);
     }
 
 
+    static void updateList(List<String> list){
+        list.add("1");
+    }
+
+    static void updateInt(int j){
+        j = 20;
+        System.out.println("j is" + j);
+    }
 }
