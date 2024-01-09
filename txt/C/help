@@ -1,5 +1,0 @@
-1.如果通过include 引入文件，那么只能访问该文件的static函数
-2.如果其他文件有对应的函数，可以通过在main中通过定义此函数来访问
-3.char short int long float double 1,2,4,4,4,8
-4.int* 表示的是一个指向int类型数据的指针类型
-5.int c = i++ 和 int c =  ++i 在C和JAVA中一致，在右侧则表示先赋值，再+1，左侧是先+1，再赋值

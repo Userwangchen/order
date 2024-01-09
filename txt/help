@@ -1,2 +1,6 @@
 1.stringredistemplate 不需要设置序列化，它是redistemplate的子类，已经配置好序列化
-2.
+2.oracle中有一个Row_number() over(parttion by fileds order by fileds) 这样的函数，是一个排序函数,parttion by是根据字段先
+   分组再排序，如：根据班级排序
+3.分析函数：last_value(fileds) over(parttion by fileds order by fileds)  去排序最后的一个数据，可以取最大或者最小值
+4.关于2进制的补码的详细解释：https://www.zhihu.com/question/20458542
+5.a数，取反加一得到b数，那么a+b=模的。符号位更多像是从此处开始分割之后的一个表示--->
