@@ -11,17 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.Context;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +34,7 @@ public class OrderController {
     TbuserMapper tbuserMapper;
 
     @GetMapping("/getAll")
-    public List<String> getAll(){
+    public List<String> getAll() {
         List<String> list = new ArrayList<>();
         list.add("order1");
         list.add("order2");
@@ -51,7 +44,7 @@ public class OrderController {
     }
 
     @GetMapping("/getTbUserById")
-    public void getTbUserById(Long id){
+    public void getTbUserById(Long id) {
         Tbuser tbuser = tbuserMapper.selectByPrimaryKey(id);
         logger.info("tbUser is {}", JSON.toJSONString(tbuser));
     }
@@ -60,34 +53,34 @@ public class OrderController {
         测试redis中字符串是否一致问题
      */
     @GetMapping("getRedisResult")
-    public void getRedisResult(){
+    public void getRedisResult() {
         String secCde = "882358";
         String year = "2022";
         String bussnessId = secCde + year;
         Boolean vaaa = redisTemplate.opsForValue().setIfAbsent(bussnessId, "vaaa", 30L, TimeUnit.SECONDS);
         boolean aNull = Objects.isNull(vaaa ? false : vaaa);
-        logger.info("result is {}",aNull);
+        logger.info("result is {}", aNull);
     }
 
 
     @GetMapping("sendMessage")
-    public boolean sendMessage(Order order){
+    public boolean sendMessage(Order order) {
         return producer.send(order);
 
     }
 
     @GetMapping("testHandler1")
-    public void testHandler1(){
+    public void testHandler1() {
         ContextHandler instance = ContextHandler.getInstance();
         instance.setName("zhangsan");
 
     }
 
     @GetMapping("testHandler2")
-    public void testHandler2(){
+    public void testHandler2() {
         ContextHandler instance = ContextHandler.getInstance();
         String name = instance.getName();
-        logger.info("name is : {}",name);
+        logger.info("name is : {}", name);
 
     }
 
