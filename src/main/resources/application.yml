@@ -2,41 +2,42 @@ server:
   port: 9003
 spring:
   cloud:
-    stream:
-      bindings:
-# 这个地方是个@Output（target）做表示找到配置
-        order-publish-out:
-          destination: order-publish  #这个是topic名称
-          group: t1  #这个是消费者分组
-          #通道名
-        order-status-in:
-          destination: order-publish
-          group: t1
-          #这种方式实现了同一个通道，创建两个消费者组，各自消费各自的数据不影响
-        order-status1-in:
-          destination: order-publish
-          group: t2
-      kafka:
-        binder:
-          brokers:
-            - 192.168.2.2:9092
-          auto-create-topics: true
-          auto-add-partitions: true
-          min-partition-count: 1
-          replication-factor: 1
+#    stream:
+#      bindings:
+## 这个地方是个@Output（target）做表示找到配置
+#        order-publish-out:
+#          destination: order-publish  #这个是topic名称
+#          group: t1  #这个是消费者分组
+#          #通道名
+#        order-status-in:
+#          destination: order-publish
+#          group: t1
+#          #这种方式实现了同一个通道，创建两个消费者组，各自消费各自的数据不影响
+#        order-status1-in:
+#          destination: order-publish
+#          group: t2
+#      kafka:
+#        binder:
+#          brokers:
+#            - 192.168.2.2:9092
+#          auto-create-topics: true
+#          auto-add-partitions: true
+#          min-partition-count: 1
+#          replication-factor: 1
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    username: root
-    password: 123456
-    url: jdbc:mysql://192.168.183.31:3306/cw?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      minimum-idle: 10
-      idle-timeout: 600000
-      maximum-pool-size: 20
-      auto-commit: true
-      max-lifetime: 1800000
-      connection-timeout: 30000
+    cw:
+      type: com.zaxxer.hikari.HikariDataSource
+      username: root
+      password: 123456
+      url: jdbc:mysql://192.168.183.31:3306/cw?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=false
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        minimum-idle: 10
+        idle-timeout: 600000
+        maximum-pool-size: 20
+        auto-commit: true
+        max-lifetime: 1800000
+        connection-timeout: 30000
   redis:
     host: 192.168.2.2
     port: 6379
@@ -49,5 +50,7 @@ spring:
         max-wait: 100
         min-idle: 0
 mybatis:
-  mapper-locations:
-    - classpath*:/mapper/*.xml
+#  mapper-locations:
+#    - classpath*:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
